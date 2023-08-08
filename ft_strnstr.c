@@ -20,22 +20,20 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	size_t	j;
 
 	i = 0;
-	if (*little == '\0')
+	if (little[0] == '\0')
 		return ((char *) big);
-	if (len == 0)
-		return (NULL);
-	while (big[i] != '\0' && i < len)
+	while (big[i] != '\0')
 	{
 		j = 0;
-		while (little[j] == big[i + j] && i + j <= len)
+		while (big[i + j] == little[j] && big[i + j] != '\0' && (i + j) < len)
 		{
 			if (little[j + 1] == '\0')
-				return ((char *) big + i);
+				return ((char *)&big[i]);
 			j++;
 		}
 		i++;
 	}
-	return (NULL);
+	return (0);
 }
 
 /*
@@ -45,7 +43,7 @@ string little in the string big, where not more than len characters
 are searched. Characters that appear after a \0 character are not searched.
 */
 
-
+/*
 int main(void)
 {
 	char haystack[] = "The first word is then the second word.";
@@ -54,3 +52,4 @@ int main(void)
 	char *ptr = ft_strnstr(haystack, needle, size);
 	printf("ft_strnstr - %s\n", ptr);
 }
+*/

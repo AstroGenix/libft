@@ -15,71 +15,75 @@
 //#include <stdio.h>
 //#include <string.h>
 
-int	word_count(char *string, char c)
+static size_t	word_stop(char const *str, char stop)
 {
 	int	i;
-	int	count;
-	int	flag;
+
+	i = 0;
+	while (str[i] && str[i] != stop)
+		i++;
+	return (i);
+}
+
+static int	word_count(char const *str, char c)
+{
+	size_t	i;
+	size_t	len;
+	int		count;
 
 	i = 0;
 	count = 0;
-	flag = 0;
-	while (string[i] != '\0')
+	while (str[i])
 	{
-		if (string[i] != c && flag == 0)
-		{
+		while (str[i] == c)
+			i++;
+		len = word_stop(str + i, c);
+		i += len;
+		if (len > 0)
 			count++;
-			flag = 1;
-		}
-		else if (string[i] == c)
-			flag = 0;
-		i++;
 	}
 	return (count);
 }
 
-char	*word_build(const char *str, int start, int finish)
+static void	*free_word(char **str)
 {
-	char	*word;
-	int		i;
+	int	i;
 
 	i = 0;
-	word = malloc(sizeof(char) * (finish - start + 1));
-	while (start < finish)
+	while (str[i])
 	{
-		word[i] = str[start];
+		free(str[i]);
 		i++;
-		start++;
 	}
-	word[i] = '\0';
-	return (word);
+	free(str);
+	return (NULL);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**str;
-	size_t	i;
+	int		i;
 	int		j;
-	int		start;
+	int		num;
 
-	str = (char **)malloc(sizeof(char *) * (word_count((char *)s, c) + 1));
-	if (!str || !s)
+	if (!s)
 		return (NULL);
 	i = 0;
-	j = 0;
-	start = -1;
-	while (i < ft_strlen(s) + 1)
+	j = -1;
+	num = word_count(s, c);
+	str = (char **)malloc(sizeof(char *) * (num + 1));
+	if (!str)
+		return (NULL);
+	while (++j < num)
 	{
-		if (s[i] != c && start < 0)
-			start = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && start >= 0)
-		{
-			str[j++] = word_build(s, start, i);
-			start = -1;
-		}
-		i++;
+		while (s[i] == c)
+			i++;
+		str[j] = ft_substr(s, i, word_stop(s + i, c));
+		if (!str[j])
+			return (free_word(str));
+		i += word_stop(s + i, c);
 	}
-	str[j] = 0;
+	str[num] = NULL;
 	return (str);
 }
 

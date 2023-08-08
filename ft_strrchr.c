@@ -16,22 +16,18 @@
 
 char	*ft_strrchr(const char *str, int c)
 {
-	int	count;
+	int		i;
+	char	chr;
 
-	count = 0;
-	while (*str != '\0')
-	{
-		count++;
-		str++;
-	}
-	while (count >= 0)
-	{
-		if (*str == c)
-			return ((char *) str);
-		str--;
-		count--;
-	}
-	return (NULL);
+	i = 0;
+	chr = (char)c;
+	while (str[i] != '\0')
+		i++;
+	while (i > 0 && str[i] != chr)
+		i--;
+	if (str[i] == chr)
+		return ((char *)&str[i]);
+	return (0);
 }
 
 /*

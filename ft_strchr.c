@@ -16,18 +16,14 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	unsigned char	*str_s;
+	char	chr;
 
-	str_s = (unsigned char *) s;
-	while (*str_s != '\0')
-	{
-		if (*str_s == c)
-			return ((char *) str_s);
-		str_s++;
-	}
-	if (c == 0)
-		return ((char *)str_s);
-	return (NULL);
+	chr = (char)c;
+	while (*s != '\0' && *s != chr)
+		s++;
+	if (*s == chr)
+		return ((char *)s);
+	return (0);
 }
 
 /*
