@@ -34,7 +34,7 @@ BONUS_OBJS = $(SRC_BONUS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-			ar -rcs $(NAME) $(OBJS)
+			@ar -rcs $(NAME) $(OBJS)
 
 bonus: $(NAME) $(BONUS_OBJS)
 			ar -rcs $(NAME) $(BONUS_OBJS)
